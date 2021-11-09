@@ -461,7 +461,7 @@ static void phase1_tests(void)
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_TPM_REQUESTED_REBOOT),
 		1, "  tpm reboot request");
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST),
-		VB2_RECOVERY_RO_TPM_REBOOT, "  recovery request");
+		0, "  recovery request");
 
 	reset_common_data(FOR_MISC);
 	ctx->flags |= VB2_CONTEXT_SECDATA_WANTS_REBOOT;
@@ -473,7 +473,7 @@ static void phase1_tests(void)
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_TPM_REQUESTED_REBOOT),
 		1, "  tpm reboot request");
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST),
-		VB2_RECOVERY_RO_UNSPECIFIED, "  recovery request");
+		VB2_RECOVERY_RO_UNSPECIFIED, "  recovery request not cleared");
 
 	reset_common_data(FOR_MISC);
 	vb2_nv_set(ctx, VB2_NV_TPM_REQUESTED_REBOOT, 1);
@@ -484,8 +484,8 @@ static void phase1_tests(void)
 		"  recovery reason");
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_TPM_REQUESTED_REBOOT),
 		0, "  tpm reboot request");
-	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST),
-		VB2_RECOVERY_RO_UNSPECIFIED, "  recovery request");
+	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST), 0,
+		"  recovery request cleared");
 
 	reset_common_data(FOR_MISC);
 	ctx->flags |= VB2_CONTEXT_SECDATA_WANTS_REBOOT;
@@ -497,8 +497,8 @@ static void phase1_tests(void)
 		"  recovery reason");
 	TEST_EQ(vb2_nv_get(ctx, VB2_NV_TPM_REQUESTED_REBOOT),
 		1, "  tpm reboot request");
-	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST),
-		VB2_RECOVERY_RO_UNSPECIFIED, "  recovery request");
+	TEST_EQ(vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST), 0,
+		"  recovery request cleared");
 
 	/* Cases for checking DISPLAY_INIT and DISPLAY_AVAILABLE. */
 	reset_common_data(FOR_MISC);
