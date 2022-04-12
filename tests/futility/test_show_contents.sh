@@ -16,8 +16,12 @@ SHOW_FILES="
   tests/devkeys/kernel.keyblock
   tests/futility/data/fw_vblock.bin
   tests/futility/data/fw_gbb.bin
+<<<<<<< HEAD
   tests/futility/data/bios_zgb_mp.bin
   tests/futility/data/bios_mario_mp.bin
+=======
+  tests/futility/data/bios_peppy_mp.bin
+>>>>>>> 3000736e (futility: Remove --devsign and --devkeyblock)
   tests/futility/data/kern_preamble.bin
   tests/futility/data/sample.vbpubk2
   tests/futility/data/sample.vbprik2
