@@ -34,8 +34,6 @@ struct sign_option_s {
 	struct vb2_private_key *signprivate;
 	struct vb2_keyblock *keyblock;
 	struct vb2_packed_key *kernel_subkey;
-	struct vb2_private_key *devsignprivate;
-	struct vb2_keyblock *devkeyblock;
 	uint32_t version;
 	int version_specified;
 	uint32_t flags;
@@ -66,5 +64,8 @@ struct sign_option_s {
 	struct vb2_private_key *prikey;
 };
 extern struct sign_option_s sign_option;
+
+#define FILE_MODE_SIGN(sign_options)                                           \
+	(sign_options.create_new_outfile ? FILE_RO : FILE_RW)
 
 #endif  /* VBOOT_REFERENCE_FUTILITY_OPTIONS_H_ */

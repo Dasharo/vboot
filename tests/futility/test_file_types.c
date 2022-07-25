@@ -26,8 +26,12 @@ static struct {
 	{FILE_TYPE_KEYBLOCK,        "tests/devkeys/kernel.keyblock"},
 	{FILE_TYPE_FW_PREAMBLE,     "tests/futility/data/fw_vblock.bin"},
 	{FILE_TYPE_GBB,	            "tests/futility/data/fw_gbb.bin"},
+<<<<<<< HEAD
 	{FILE_TYPE_BIOS_IMAGE,      "tests/futility/data/bios_zgb_mp.bin"},
 	{FILE_TYPE_OLD_BIOS_IMAGE,  "tests/futility/data/bios_mario_mp.bin"},
+=======
+	{FILE_TYPE_BIOS_IMAGE,      "tests/futility/data/bios_peppy_mp.bin"},
+>>>>>>> 3000736e (futility: Remove --devsign and --devkeyblock)
 	{FILE_TYPE_KERN_PREAMBLE,   "tests/futility/data/kern_preamble.bin"},
 	{FILE_TYPE_RAW_FIRMWARE,    },		/* need a test for this */
 	{FILE_TYPE_RAW_KERNEL,	    },		/* need a test for this */

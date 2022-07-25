@@ -455,6 +455,20 @@ FWLIB_OBJS = ${FWLIB_SRCS:%.c=${BUILD}/%.o}
 TLCL_OBJS = ${TLCL_SRCS:%.c=${BUILD}/%.o}
 ALL_OBJS += ${FWLIB_OBJS} ${TLCL_OBJS}
 
+# Maintain behaviour of default on.
+USE_FLASHROM ?= 1
+
+ifneq ($(filter-out 0,${USE_FLASHROM}),)
+$(info building with libflashrom support)
+FLASHROM_LIBS := $(shell ${PKG_CONFIG} --libs flashrom)
+COMMONLIB_SRCS += \
+	host/lib/flashrom.c \
+	host/lib/flashrom_drv.c
+CFLAGS += -DUSE_FLASHROM
+endif
+COMMONLIB_SRCS += \
+	host/lib/subprocess.c
+
 # Intermediate library for the vboot_reference utilities to link against.
 UTILLIB = ${BUILD}/libvboot_util.a
 
@@ -469,6 +483,7 @@ UTILLIB_SRCS = \
 	cgpt/cgpt_show.c \
 	futility/dump_kernel_config_lib.c \
 	$(CROSSYSTEM_ARCH_C) \
+	host/lib/cbfstool.c \
 	host/lib/chromeos_config.c \
 	host/lib/crossystem.c \
 	host/lib/crypto.c \
