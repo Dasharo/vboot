@@ -467,8 +467,7 @@ COMMONLIB_SRCS += \
 CFLAGS += -DUSE_FLASHROM
 endif
 COMMONLIB_SRCS += \
-	host/lib/subprocess.c \
-	host/lib/cbfstool.c
+	host/lib/subprocess.c
 
 # Intermediate library for the vboot_reference utilities to link against.
 UTILLIB = ${BUILD}/libvboot_util.a
@@ -484,6 +483,7 @@ UTILLIB_SRCS = \
 	cgpt/cgpt_show.c \
 	futility/dump_kernel_config_lib.c \
 	$(CROSSYSTEM_ARCH_C) \
+	host/lib/cbfstool.c \
 	host/lib/chromeos_config.c \
 	host/lib/crossystem.c \
 	host/lib/crypto.c \
