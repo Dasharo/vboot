@@ -444,7 +444,7 @@ int vb2api_allow_recovery(struct vb2_context *ctx)
 	return !!(vb2_get_sd(ctx)->flags & VB2_SD_FLAG_MANUAL_RECOVERY);
 }
 
-void vb2_clear_recovery(struct vb2_context *ctx)
+void vb2api_clear_recovery(struct vb2_context *ctx)
 {
 	struct vb2_shared_data *sd = vb2_get_sd(ctx);
 	uint32_t reason = vb2_nv_get(ctx, VB2_NV_RECOVERY_REQUEST);

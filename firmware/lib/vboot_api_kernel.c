@@ -183,7 +183,7 @@ vb2_error_t VbSelectAndLoadKernel(struct vb2_context *ctx,
 	 * If in non-manual recovery mode, save the recovery reason as subcode.
 	 * Otherwise, clear any leftover recovery requests or subcodes.
 	 */
-	vb2_clear_recovery(ctx);
+	vb2api_clear_recovery(ctx);
 
 	/* Select boot path */
 	if (ctx->flags & VB2_CONTEXT_RECOVERY_MODE) {
