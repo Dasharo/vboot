@@ -478,6 +478,23 @@ static bool image_uses_cbfs_integration(const char *file)
 	return rv;
 }
 
+static bool image_uses_rw_b_partition(const char *file)
+{
+	char *value;
+	bool rv = false;
+
+	if (cbfstool_get_config_value(file, NULL,
+				      "CONFIG_VBOOT_SLOTS_RW_AB",
+				      &value) != VB2_SUCCESS)
+		return false;
+
+	if (value && strcmp("y", value) == 0)
+		rv = true;
+
+	free(value);
+	return rv;
+}
+
 static void image_check_and_prepare_cbfs(const char *file,
 					 enum bios_component fw_c,
 					 bool uses_cbfs_integration,
@@ -525,11 +542,13 @@ int ft_sign_bios(const char *name, void *data)
 	uint8_t *buf = NULL;
 	uint32_t len = 0;
 	bool uses_cbfs_integration = image_uses_cbfs_integration(name);
+	bool uses_rw_b_partition = image_uses_rw_b_partition(name);
 
 	image_check_and_prepare_cbfs(name, BIOS_FMAP_FW_MAIN_A,
 				     uses_cbfs_integration, &state);
-	image_check_and_prepare_cbfs(name, BIOS_FMAP_FW_MAIN_B,
-				     uses_cbfs_integration, &state);
+	if (uses_rw_b_partition)
+		image_check_and_prepare_cbfs(name, BIOS_FMAP_FW_MAIN_B,
+					     uses_cbfs_integration, &state);
 
 	if (futil_open_and_map_file(name, &fd, FILE_MODE_SIGN(sign_option),
 				    &buf, &len))
@@ -540,15 +559,19 @@ int ft_sign_bios(const char *name, void *data)
 	if (retval)
 		goto done;
 
-	retval = prepare_slot(buf, len, BIOS_FMAP_FW_MAIN_B, BIOS_FMAP_VBLOCK_B,
-			      &state);
-	if (retval && state.area[BIOS_FMAP_FW_MAIN_B].is_valid)
-		goto done;
+	if (uses_rw_b_partition) {
+		retval = prepare_slot(buf, len, BIOS_FMAP_FW_MAIN_B,
+				      BIOS_FMAP_VBLOCK_B, &state);
+		if (retval && state.area[BIOS_FMAP_FW_MAIN_B].is_valid)
+			goto done;
+	}
 
 	check_slot_after_prepare(BIOS_FMAP_FW_MAIN_A, uses_cbfs_integration,
 				 &state);
-	check_slot_after_prepare(BIOS_FMAP_FW_MAIN_B, uses_cbfs_integration,
-				 &state);
+
+	if (uses_rw_b_partition)
+		check_slot_after_prepare(BIOS_FMAP_FW_MAIN_B, uses_cbfs_integration,
+					 &state);
 
 	retval = sign_bios_at_end(&state);
 done:
