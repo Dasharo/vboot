@@ -257,6 +257,18 @@ enum vb2_context_flags {
 	 * nvdata, FWMP or GBB flags.
 	 */
 	VB2_CONTEXT_DEV_BOOT_ALTFW_ALLOWED = (1 << 27),
+	/*
+	 * If this is set after kernel verification, caller should disable the
+	 * TPM before jumping to kernel.
+	 */
+	VB2_CONTEXT_DISABLE_TPM = (1 << 28),
+
+	/*
+	 * Indicates there is only one RW slot present. Caller should set this
+	 * flag when initializing the context if the flash layout does not
+	 * support two RW slots.
+	 */
+	VB2_CONTEXT_SLOT_A_ONLY = (1 << 29),
 };
 
 /* Helper for aligning fields in vb2_context. */
